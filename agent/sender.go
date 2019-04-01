@@ -9,7 +9,7 @@ import (
 )
 
 // SendToFalconAgent POST metrics to falcon agent PUSH API.
-func SendToFalconAgent(urlFalcon, dataPost string) (respBody string) {
+func SendToFalconAgent(urlFalcon, dataPost string) (respCode int, respBody string) {
 	req, err := http.NewRequest("POST", urlFalcon, strings.NewReader(dataPost))
 	if err != nil {
 		log.Println(err)
@@ -29,6 +29,7 @@ func SendToFalconAgent(urlFalcon, dataPost string) (respBody string) {
 		return
 	}
 	defer resp.Body.Close()
+	respCode = resp.StatusCode
 
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
